@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+  quartermaster:
+    container_name: quartermaster
+    image: h0d0user/quartermaster:latest
+    restart: always
+    environment:
+      - API_HASH=YOURAPIHASH
+    networks:
+      - quartermaster_net
+    volumes:
+      - "./search_scheme.txt:/opt/search_scheme.txt"
+
+networks:
+  quartermaster_net:
