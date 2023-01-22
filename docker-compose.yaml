@@ -8,6 +8,8 @@ services:
     restart: always
     environment:
       - APIKEY_SECRET_B64E=APIKEY_SECRET_B64E
+      - TELE_BOT_TOKEN=TELE_BOT_TOKEN
+      - TELE_CHAT_ID=TELE_CHAT_ID
     networks:
       - quartermaster_net
     volumes:
