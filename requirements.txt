@@ -1,1 +1,3 @@
+black
+isort
 httplib2~=0.21.0
