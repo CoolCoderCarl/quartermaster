@@ -7,7 +7,7 @@ services:
     image: h0d0user/quartermaster:latest
     restart: always
     environment:
-      - API_HASH=YOURAPIHASH
+      - APIKEY_SECRET_B64E=APIKEY_SECRET_B64E
     networks:
       - quartermaster_net
     volumes:
