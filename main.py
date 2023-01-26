@@ -86,20 +86,17 @@ def send_houses_to_telegram(message):
             TELEGRAM_API_URL,
             json={
                 "chat_id": TELEGRAM_CHAT_ID,
-                "text": f"Property type: {message['propertyType']}\n"
+                "text":
+                f"Property type: {message['propertyType']}\n"
                 f"\n"
                 f"Price: {message['price']} EUR\n"
-                f"\n"
                 f"Operation: {message['operation']}\n"
                 f"\n"
                 f"Rooms: {message['rooms']}\n"
-                f"\n"
                 f"Bathrooms: {message['bathrooms']}\n"
                 f"\n"
                 f"Address: {message['address']}\n"
-                f"\n"
                 f"Province: {message['province']}\n"
-                f"\n"
                 f"Municipality: {message['municipality']}\n"
                 f"\n"
                 f"URL: {message['url']}\n"
