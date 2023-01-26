@@ -7,11 +7,13 @@ services:
     image: h0d0user/quartermaster:latest
     restart: always
     environment:
-      - API_HASH=YOURAPIHASH
+      - APIKEY_SECRET_B64E=APIKEY_SECRET_B64E
+      - TELEGRAM_BOT_TOKEN=TELEGRAM_BOT_TOKEN
+      - TELEGRAM_CHAT_ID=TELEGRAM_CHAT_ID
     networks:
       - quartermaster_net
-    volumes:
-      - "./search_scheme.txt:/opt/search_scheme.txt"
+#    volumes:
+#      - "./settings.txt:/opt/settings.txt"
 
 networks:
   quartermaster_net:
