@@ -8,12 +8,12 @@ services:
     restart: always
     environment:
       - APIKEY_SECRET_B64E=APIKEY_SECRET_B64E
-      - TELE_BOT_TOKEN=TELE_BOT_TOKEN
-      - TELE_CHAT_ID=TELE_CHAT_ID
+      - TELEGRAM_BOT_TOKEN=TELEGRAM_BOT_TOKEN
+      - TELEGRAM_CHAT_ID=TELEGRAM_CHAT_ID
     networks:
       - quartermaster_net
-    volumes:
-      - "./search_scheme.txt:/opt/search_scheme.txt"
+#    volumes:
+#      - "./settings.txt:/opt/settings.txt"
 
 networks:
   quartermaster_net:
