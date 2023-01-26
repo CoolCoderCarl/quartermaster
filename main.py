@@ -123,15 +123,19 @@ def send_houses_to_telegram(message):
 
 if __name__ == "__main__":
     while True:
-        if datetime.now().weekday() == 6:
+        if datetime.now().weekday() == 3:
             logging.info(
                 f"Today is a {datetime.now().strftime('%A')}, a day to search and send found houses"
             )
             for msg in search_api(get_oauth_token()):
                 send_houses_to_telegram(msg)
+                time.sleep(600)
+            else:
+                logging.info("All founded results were sent. Waiting...")
+                time.sleep(43200)
         else:
             logging.info(
-                f"There is a {datetime.now().strftime('%A')}, not a working day"
+                f"There is a {datetime.now().strftime('%A')}, not a working day. Waiting..."
             )
             time.sleep(43200)
 
