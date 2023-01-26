@@ -3,7 +3,9 @@ import ast
 import json
 import logging
 import os
+import time
 import urllib
+from datetime import datetime
 
 import requests as rq
 from httplib2 import Http
@@ -18,12 +20,14 @@ logging.basicConfig(
 )
 
 
-APIKEY_SECRET_B64E = os.environ["APIKEY_SECRET_B64E"]
 IDEALISTA_URL = "https://api.idealista.com/"
 
-TELE_BOT_TOKEN = os.environ["TELE_BOT_TOKEN"]
-TELE_API_URL = f"https://api.telegram.org/bot{TELE_BOT_TOKEN}/sendMessage"
-TELE_CHAT_ID = os.environ["TELE_CHAT_ID"]
+# API key and secret from Idealista team
+APIKEY_SECRET_B64E = os.environ["APIKEY_SECRET_B64E"]
+
+TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+TELEGRAM_CHAT_ID = os.environ["TELE_CHAT_ID"]
 
 
 def get_oauth_token():
@@ -69,9 +73,9 @@ def send_houses_to_telegram(message):
     """
     try:
         response = rq.post(
-            TELE_API_URL,
+            TELEGRAM_API_URL,
             json={
-                "chat_id": TELE_CHAT_ID,
+                "chat_id": TELEGRAM_CHAT_ID,
                 "text": f"Property type: {message['propertyType']}\n"
                 f"\n"
                 f"Price: {message['price']} EUR\n"
@@ -108,9 +112,19 @@ def send_houses_to_telegram(message):
 
 
 if __name__ == "__main__":
-    # print(search_api(get_oauth_token()))
-    for msg in search_api(get_oauth_token()):
-        send_houses_to_telegram(msg)
+    while True:
+        if datetime.now().weekday() == 6:
+            logging.info(
+                f"Today is a {datetime.now().strftime('%A')}, a day to search and send found houses"
+            )
+            for msg in search_api(get_oauth_token()):
+                send_houses_to_telegram(msg)
+        else:
+            logging.info(
+                f"There is a {datetime.now().strftime('%A')}, not a working day"
+            )
+            time.sleep(43200)
+
     # for i in search_api(get_oauth_token()):
     #     try:
     #         print(f"PRICE: {i['price']}")
