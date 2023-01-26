@@ -25,12 +25,17 @@ IDEALISTA_URL = "https://api.idealista.com/"
 # API key and secret from Idealista team
 APIKEY_SECRET_B64E = os.environ["APIKEY_SECRET_B64E"]
 
+# Telegram variables
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-TELEGRAM_CHAT_ID = os.environ["TELE_CHAT_ID"]
+TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 
 def get_oauth_token():
+    """
+    Get token from Idealista API
+    :return:
+    """
     http_obj = Http()
 
     body = {"grant_type": "client_credentials"}
@@ -49,6 +54,11 @@ def get_oauth_token():
 
 
 def search_api(token):
+    """
+    Search the info
+    :param token:
+    :return:
+    """
     http_obj = Http()
     # url = IDEALISTA_URL+"/3.5/es/search?center=40.123,-3.242&country=es&maxItems=20" \
     #       "&numPage=1&distance=60000&propertyType=homes&operation=sale"
