@@ -6,6 +6,7 @@ import os
 import time
 import urllib
 from datetime import datetime
+from typing import List
 
 import requests as rq
 from httplib2 import Http
@@ -38,7 +39,7 @@ DISTANCE = os.environ["DISTANCE"]
 ITEMS = os.environ["ITEMS"]
 
 
-def get_oauth_token():
+def get_oauth_token() -> str:
     """
     Get token from Idealista API
     :return:
@@ -50,20 +51,23 @@ def get_oauth_token():
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         "Authorization": "Basic " + APIKEY_SECRET_B64E,
     }
-    resp, content = http_obj.request(
-        IDEALISTA_URL + "/oauth/token",
-        method="POST",
-        headers=headers,
-        body=urllib.parse.urlencode(body),
-    )
-    # return content
-    return ast.literal_eval(content.decode("UTF-8"))["access_token"]
+    try:
+        resp, content = http_obj.request(
+            IDEALISTA_URL + "/oauth/token",
+            method="POST",
+            headers=headers,
+            body=urllib.parse.urlencode(body),
+        )
+        return ast.literal_eval(content.decode("UTF-8"))["access_token"]
+    except BaseException as base_err:
+        logging.error(f"OAuth err: {base_err}")
+        return ""
 
 
 # REGION_CODE = "0-EU-ES-61" # 404
 
 
-def search_api(token):
+def search_api(token) -> List:
     """
     Search the info
     :param token:
@@ -84,12 +88,17 @@ def search_api(token):
     #     IDEALISTA_URL
     #     + f"/3.5/es/search?propertyType=homes&operation=rent&locationId={REGION_CODE}&maxItems=20"
     # )
-
     headers = {"Authorization": "Bearer " + token}
-    resp, content = http_obj.request(url, method="POST", headers=headers)
-    return json.loads(content.decode("UTF-8").replace("'", '"'))[
-        "elementList"
-    ]  # ast.literal_eval - Did not work
+
+    try:
+        resp, content = http_obj.request(url, method="POST", headers=headers)
+
+        return json.loads(content.decode("UTF-8").replace("'", '"'))[
+            "elementList"
+        ]  # ast.literal_eval - Did not work
+    except BaseException as base_err:
+        logging.error(f"Searching err: {base_err}")
+        return []
 
 
 def send_houses_to_telegram(message):
@@ -136,7 +145,7 @@ def send_houses_to_telegram(message):
 
 if __name__ == "__main__":
     while True:
-        if datetime.now().weekday() == 3:
+        if datetime.now().weekday() == [1, 3, 5]:
             logging.info(
                 f"Today is a {datetime.now().strftime('%A')}, a day to search and send found houses"
             )
@@ -156,18 +165,3 @@ if __name__ == "__main__":
                 f"There is a {datetime.now().strftime('%A')}, not a working day. Waiting..."
             )
             time.sleep(14400)
-
-    # for i in search_api(get_oauth_token()):
-    #     try:
-    #         print(f"PRICE: {i['price']}")
-    #         print(f"PROPERTY TYPE: {i['propertyType']}")
-    #         print(f"OPERATION: {i['operation']}")
-    #         print(f"ROOMS: {i['rooms']}")
-    #         print(f"BATHROOMS: {i['bathrooms']}")
-    #         print(f"ADDRESS: {i['address']}")
-    #         print(f"PROVINCE: {i['province']}")
-    #         print(f"MUNICIPALITY: {i['municipality']}")
-    #         print(f"URL: {i['url']}")
-    #         print(f"DESCRIPTION: {i['description']}")
-    #     except KeyError as keyerr:
-    #         logging.error(keyerr)
