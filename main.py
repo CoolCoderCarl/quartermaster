@@ -137,15 +137,15 @@ def send_houses_to_telegram(message):
             logging.error(
                 f"Not sent: {response.reason}. Status code: {response.status_code}"
             )
-    except KeyError as keyerr:
-        logging.error(keyerr)
+    except KeyError as key_err:
+        logging.error(key_err)
     except Exception as err:
         logging.error(err)
 
 
 if __name__ == "__main__":
     while True:
-        if datetime.now().weekday() == [1, 3, 5]:
+        if datetime.now().weekday() in [1, 2, 4, 5]:
             logging.info(
                 f"Today is a {datetime.now().strftime('%A')}, a day to search and send found houses"
             )
@@ -155,7 +155,7 @@ if __name__ == "__main__":
                     time.sleep(600)
                 else:
                     logging.info("All founded results were sent. Waiting...")
-                    time.sleep(14400)
+                    time.sleep(10800)
             except json.JSONDecodeError as json_err:
                 logging.error(json_err)
             except BaseException as base_err:
@@ -164,4 +164,4 @@ if __name__ == "__main__":
             logging.info(
                 f"There is a {datetime.now().strftime('%A')}, not a working day. Waiting..."
             )
-            time.sleep(14400)
+            time.sleep(10800)
