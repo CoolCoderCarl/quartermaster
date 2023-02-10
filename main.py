@@ -34,7 +34,7 @@ TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 # Search params
 PROPERTY_TYPE = os.environ["PROPERTY_TYPE"]
 OPERATION = os.environ["OPERATION"]
-CENTER_GCS = os.environ["CENTER_GCS"]  # GCS (Geographic coordinate system)
+# CENTER_GCS = os.environ["CENTER_GCS"]  # GCS (Geographic coordinate system)
 DISTANCE = os.environ["DISTANCE"]
 ITEMS = os.environ["ITEMS"]
 
@@ -80,7 +80,7 @@ def search_api(token) -> List:
         IDEALISTA_URL + f"/3.5/es/search?"
         f"propertyType={PROPERTY_TYPE}&"
         f"operation={OPERATION}&"
-        f"center={CENTER_GCS}&"
+        f"center=36.721976,-4.440186&"  # CENTER_GCS
         f"distance={DISTANCE}&"
         f"maxItems={ITEMS}"
     )
@@ -138,9 +138,9 @@ def send_houses_to_telegram(message):
                 f"Not sent: {response.reason}. Status code: {response.status_code}"
             )
     except KeyError as key_err:
-        logging.error(key_err)
-    except Exception as err:
-        logging.error(err)
+        logging.error(f"Key err while sending to telegram: {key_err}")
+    except BaseException as base_err:
+        logging.error(f"Err while sending to telegram: {base_err}")
 
 
 if __name__ == "__main__":
@@ -157,9 +157,9 @@ if __name__ == "__main__":
                     logging.info("All founded results were sent. Waiting...")
                     time.sleep(10800)
             except json.JSONDecodeError as json_err:
-                logging.error(json_err)
+                logging.error(f"JSON err while iterate through the results: {json_err}")
             except BaseException as base_err:
-                logging.error(base_err)
+                logging.error(f"Err while iterate through the results: {base_err}")
         else:
             logging.info(
                 f"There is a {datetime.now().strftime('%A')}, not a working day. Waiting..."
