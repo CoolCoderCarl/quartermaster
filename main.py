@@ -35,6 +35,7 @@ TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 PROPERTY_TYPE = os.environ["PROPERTY_TYPE"]
 OPERATION = os.environ["OPERATION"]
 # CENTER_GCS = os.environ["CENTER_GCS"]  # GCS (Geographic coordinate system)
+# REGION_CODE = os.environ["REGION_CODE"] # "0-EU-ES-61" # 404 # NUTS not matches with wiki
 DISTANCE = os.environ["DISTANCE"]
 ITEMS = os.environ["ITEMS"]
 
@@ -64,29 +65,29 @@ def get_oauth_token() -> str:
         return ""
 
 
-# REGION_CODE = "0-EU-ES-61" # 404
-
-
 def search_api(token) -> List:
     """
-    Search the info
+    Search the info about objets in chosen country with chosen filters
     :param token:
     :return:
     """
     http_obj = Http()
-    # url = IDEALISTA_URL+"/3.5/es/search?center=40.123,-3.242&country=es&maxItems=20" \
-    #       "&numPage=1&distance=60000&propertyType=homes&operation=sale"
+
     url = (
         IDEALISTA_URL + f"/3.5/es/search?"
         f"propertyType={PROPERTY_TYPE}&"
         f"operation={OPERATION}&"
-        f"center=36.721976,-4.440186&"  # CENTER_GCS
+        # f"center=36.721976,-4.440186&"  # CENTER_GCS - Málaga
+        f"center=42.606119,-5.574742&"  # CENTER_GCS - León
         f"distance={DISTANCE}&"
         f"maxItems={ITEMS}"
     )
     # url = (
     #     IDEALISTA_URL
-    #     + f"/3.5/es/search?propertyType=homes&operation=rent&locationId={REGION_CODE}&maxItems=20"
+    #     + f"/3.5/es/search?propertyType={PROPERTY_TYPE}&"
+    #       f"operation={OPERATION}&"
+    #       f"locationId={REGION_CODE}&"
+    #       f"maxItems={ITEMS}"
     # )
     headers = {"Authorization": "Bearer " + token}
 
@@ -145,7 +146,7 @@ def send_houses_to_telegram(message):
 
 if __name__ == "__main__":
     while True:
-        if datetime.now().weekday() in [1, 2, 4, 5]:
+        if datetime.now().weekday() in [2, 4, 6]:
             logging.info(
                 f"Today is a {datetime.now().strftime('%A')}, a day to search and send found houses"
             )
