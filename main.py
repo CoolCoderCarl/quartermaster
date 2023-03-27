@@ -83,13 +83,7 @@ def search_api(token) -> List:
         f"distance={DISTANCE}&"
         f"maxItems={ITEMS}"
     )
-    # url = (
-    #     IDEALISTA_URL
-    #     + f"/3.5/es/search?propertyType={PROPERTY_TYPE}&"
-    #       f"operation={OPERATION}&"
-    #       f"locationId={REGION_CODE}&"
-    #       f"maxItems={ITEMS}"
-    # )
+
     headers = {"Authorization": "Bearer " + token}
 
     try:
