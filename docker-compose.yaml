@@ -12,14 +12,13 @@ services:
       - TELEGRAM_CHAT_ID=TELEGRAM_CHAT_ID
       - PROPERTY_TYPE=PROPERTY_TYPE
       - OPERATION=OPERATION
-#      - CENTER_GCS=CENTER_GCS
+      - LATITUDE=LATITUDE
+      - LONGITUDE=LONGITUDE
 #      - REGION_CODE=REGION_CODE
       - DISTANCE=DISTANCE
-      - ITEMS=ITEMS
+      - MAXITEMS=MAXITEMS
     networks:
       - quartermaster_net
-#    volumes:
-#      - "./settings.txt:/opt/settings.txt"
 
 networks:
   quartermaster_net:
