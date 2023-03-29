@@ -10,10 +10,15 @@ services:
       - APIKEY_SECRET_B64E=APIKEY_SECRET_B64E
       - TELEGRAM_BOT_TOKEN=TELEGRAM_BOT_TOKEN
       - TELEGRAM_CHAT_ID=TELEGRAM_CHAT_ID
+      - PROPERTY_TYPE=PROPERTY_TYPE
+      - OPERATION=OPERATION
+      - LATITUDE=LATITUDE
+      - LONGITUDE=LONGITUDE
+#      - REGION_CODE=REGION_CODE
+      - DISTANCE=DISTANCE
+      - MAXITEMS=MAXITEMS
     networks:
       - quartermaster_net
-#    volumes:
-#      - "./settings.txt:/opt/settings.txt"
 
 networks:
   quartermaster_net:
